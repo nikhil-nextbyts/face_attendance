@@ -1,3 +1,4 @@
+// EncodeFace.jsx (replace file)
 import { useState } from "react";
 import { API_BASE } from "../api";
 
@@ -16,36 +17,20 @@ export default function EncodeFace() {
       setMsg("Uploading image...");
       const form = new FormData();
       form.append("image", file);
+      form.append("name", name);
+      form.append("email", email);
 
-      // Step 1: encode (Node route forwards to FastAPI)
       const encodeResp = await fetch(`${API_BASE}/api/face/encode`, {
         method: "POST",
         body: form,
       });
+
       const encodeData = await encodeResp.json();
       if (!encodeResp.ok)
         throw new Error(encodeData?.message || JSON.stringify(encodeData));
 
-      // You can use filename or saved path as face_id
-      // If the backend returns encoding_path or filename, use that.
-      console.log(encodeData);
-      const faceId = encodeData?.result?.encoding_path || file.name;
-
-      // Step 2: register user in DB
-      const registerResp = await fetch(`${API_BASE}/api/user/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name,
-          email,
-          face_id: faceId,
-          image_path: encodeData?.result?.encoding_path || file.name,
-        }),
-      });
-      const regData = await registerResp.json();
-      if (!registerResp.ok)
-        throw new Error(regData?.message || JSON.stringify(regData));
-
+      // Backend should return user registration info (or face_id)
+      console.log("encodeData", encodeData);
       setMsg("User encoded and registered ✅");
     } catch (err) {
       console.error(err);
@@ -55,9 +40,7 @@ export default function EncodeFace() {
 
   return (
     <div>
-      <h2
-        className="text-3xl text-blue-600 mb-6"
-      >Register / Encode Face</h2>
+      <h2 className="text-3xl text-blue-600 mb-6">Register / Encode Face</h2>
       <form
         onSubmit={handleSubmit}
         className="bg-blue-500 h-48 container flex flex-col"
@@ -86,3 +69,5 @@ export default function EncodeFace() {
     </div>
   );
 }
+
+

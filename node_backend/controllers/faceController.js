@@ -8,6 +8,10 @@ export const encodeFace = async (req, res) => {
   const imagePath = req.file && req.file.path;
   const name = req.body?.name?.trim()  || "maina" ;
   const email = req.body?.email?.trim() || "maina@yahoo.com";
+
+    console.log("---- encodeFace incoming ----");
+    console.log("req.body:", req.body); // name and email should be here
+    console.log("req.file:", req.file); 
   
   if (!imagePath) return res.status(400).json({ message: "No image uploaded" });
   if (!name || !email) {
@@ -122,6 +126,7 @@ export const recognizeFace = async (req, res) => {
     if (!match) {
       return res.json({ message: "No match found", distance: distance ?? null });
     }
+    console.log(match);
 
     // find user by face_id
     try {

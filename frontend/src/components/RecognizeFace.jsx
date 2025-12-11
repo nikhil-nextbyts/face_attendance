@@ -110,7 +110,9 @@ function FileUpload() {
       });
       const data = await resp.json();
       if (!resp.ok) throw new Error(data?.message || JSON.stringify(data));
-      setMsg("Result: " + JSON.stringify(data));
+      const arr = [data.message, data.name, data.face_id];
+      setMsg("Result: " + arr);
+      console.log("my data :", data.message, data.user.name, data.face_id);
     } catch (err) {
       console.error(err);
       setMsg("Error: " + (err.message || err));

@@ -66,11 +66,9 @@ async def encode_face(image: UploadFile = File(...)):
     enc_path = os.path.join(ENC_DIR, f"{uid}.npy")
     np.save(enc_path, encoding)
 
-    load_known_faces()
+    load_known_faces() 
     return {"message": f"Encoding saved for {filename}", "face_id": uid,     "encoding_path": enc_path}
 
-
-#
 
 @app.post("/recognize/")
 async def recognize_face(image: UploadFile = File(...)):
