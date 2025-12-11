@@ -126,7 +126,6 @@ export const recognizeFace = async (req, res) => {
     if (!match) {
       return res.json({ message: "No match found", distance: distance ?? null });
     }
-    console.log(match);
 
     // find user by face_id
     try {
@@ -168,66 +167,3 @@ export const recognizeFace = async (req, res) => {
     }
   }
 };
-
-/* export const recognizeFace = async (req, res) => {
-  try {
-    const imagePath = req.file.path;
-
-    const formData = new FormData();
-    formData.append("image", fs.createReadStream(imagePath));
-
-    // Call FastAPI endpoint (running on port 8000)
-    const response = await axios.post(
-      "http://127.0.0.1:8000/recognize/",
-      formData,
-      {
-        headers: formData.getHeaders(),
-      }
-    );
-
-    // Delete temp image
-    fs.unlinkSync(imagePath);
-
-    res.json({
-      message: "Recognition successful",
-      result: response.data,
-    });
-  } catch (error) {
-    console.error(error);
-    res
-      .status(500)
-      .json({ message: "Recognition failed", error: error.message });
-  }
-}; */
-
-/* export const encodeFace = async (req, res) => {
-  try {
-    const imagePath = req.file.path;
-    const formData = new FormData();
-    formData.append("image", fs.createReadStream(imagePath));
-
-    // Call FastAPI endpoint (running on port 8000)
-    const response = await axios.post(
-      "http://127.0.0.1:8000/encode/",
-      formData,
-      {
-        headers: formData.getHeaders(),
-      }
-    );
-    // Delete temp image
-    fs.unlinkSync(imagePath);
-
-    const { face_id, encoding_path } = response.data;
-
-
-    res.json({
-      message: "Encoding successful",
-      result: response.data,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Encoding failed", error: error.message });
-  }
-}; */
-
-
