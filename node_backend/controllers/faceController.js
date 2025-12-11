@@ -1,5 +1,6 @@
 import axios from "axios";
 import fs from "fs";
+import dotenv from "dotenv";
 import FormData from "form-data";
 import db from "../config/db.js";
 
@@ -8,10 +9,6 @@ export const encodeFace = async (req, res) => {
   const imagePath = req.file && req.file.path;
   const name = req.body?.name?.trim()  || "maina" ;
   const email = req.body?.email?.trim() || "maina@yahoo.com";
-
-    console.log("---- encodeFace incoming ----");
-    console.log("req.body:", req.body); // name and email should be here
-    console.log("req.file:", req.file); 
   
   if (!imagePath) return res.status(400).json({ message: "No image uploaded" });
   if (!name || !email) {
@@ -47,15 +44,12 @@ export const encodeFace = async (req, res) => {
   formData.append("image", fs.createReadStream(imagePath));
 
   try {
-    const fastapiRes = await axios.post(
-      "http://127.0.0.1:8000/encode/",
-      formData,
-      {
-        headers: formData.getHeaders(),
-        maxBodyLength: Infinity,
-        maxContentLength: Infinity,
-      }
-    );
+    const encFastApiUrl = `${process.env.FASTAPI_URL}/encode/`;
+    const fastapiRes = await axios.post(encFastApiUrl, formData, {
+      headers: formData.getHeaders(),
+      maxBodyLength: Infinity,
+      maxContentLength: Infinity,
+    });
 
     const { face_id, encoding_path } = fastapiRes.data;
 
@@ -115,7 +109,8 @@ export const recognizeFace = async (req, res) => {
   formData.append("image", fs.createReadStream(imagePath));
 
   try {
-    const fastapiRes = await axios.post("http://127.0.0.1:8000/recognize/", formData, {
+    const recFastApiUrl = `${process.env.FASTAPI_URL}/recognize/`;
+    const fastapiRes = await axios.post(recFastApiUrl, formData, {
       headers: formData.getHeaders(),
       maxBodyLength: Infinity,
       maxContentLength: Infinity,

@@ -39,11 +39,11 @@ export default function EncodeFace() {
   };
 
   return (
-    <div>
+    <div className="container flex flex-col items-center mt-32 mx-auto">
       <h2 className="text-3xl text-blue-600 mb-6">Register / Encode Face</h2>
       <form
         onSubmit={handleSubmit}
-        className="bg-blue-500 h-48 container flex flex-col"
+        className="bg-blue-500 min-w-48 mx-auto h-vh-48 flex flex-col p-4 rounded-lg"
       >
         <input
           className="bg-gray-600 m-2"

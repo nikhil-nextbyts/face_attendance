@@ -125,7 +125,7 @@ function FileUpload() {
         accept="image/*"
         onChange={(e) => setFile(e.target.files[0])}
       />
-      <button type="submit">Upload & Recognize</button>
+      <button className="btn" type="submit">Upload & Recognize</button>
       <p>{msg}</p>
     </form>
   );

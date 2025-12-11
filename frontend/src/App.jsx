@@ -1,15 +1,14 @@
 import './App.css'
-import RecognizeFace from './components/RecognizeFace';
+/* import RecognizeFace from './components/RecognizeFace';
 import EncodeFace from './components/EncodeFace';
-import UsersAll from './components/UsersAll';
+import UsersAll from './components/UsersAll'; */
+import Layout from './components/Layout';
 
 function App() {
 
   return (
     <>
-      <UsersAll />
-      < EncodeFace />
-      <RecognizeFace />
+      < Layout />
     </>
   );
 }
