@@ -1,13 +1,17 @@
 import Navbar from "./Navbar";
-import EncodeFace from "./EncodeFace";
-import UsersAll from "./UsersAll";
+import Dashboard from "../pages/Dashboard";
+import About from "../pages/About";
 
 function Layout() {
   return (
-    <div>
-      <Navbar />
-      < UsersAll />
-    </div>
+    <>
+      <div className="min-h-screen bg-background-light font-sans text-text-primary pb-10">
+        <Navbar />
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 pt-8">
+          < About />
+        </main>
+      </div>
+    </>
   );
 }
 

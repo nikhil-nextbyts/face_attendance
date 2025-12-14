@@ -9,8 +9,8 @@ export default function Navbar() {
 
   return (
     <div>
-      <nav className="bg-neutral-primary fixed w-full z-20 top-0 left-0 border-b border-default">
-        <div className="max-w-7xl flex flex-wrap items-center justify-between mx-auto p-2">
+      <nav className="bg-gray-900 fixed w-full z-20 top-0 left-0 border-b-black border-default">
+        <div className="max-w-7xl flex flex-wrap items-center justify-between mx-auto p-2 ">
           <div className="flex items-center left-2">
             <span className="self-center text-xl text-heading font-semibold whitespace-nowrap">
               FaceApp

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { API_BASE } from "../api";
+import { API_BASE } from "../../api";
 
 
 export default function EditUser({ user, onsuccess, onCancel }) {
@@ -7,14 +7,20 @@ export default function EditUser({ user, onsuccess, onCancel }) {
   const [email, setEmail] = useState(user?.email || "");
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false); // State for success button text
+  const [errorMsg, setErrorMsg] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true)
-    if (!name || !email) return setMsg("Provide name, email.");
+    setErrorMsg("");
+
+    if (!name || !email) {
+      setLoading(false);
+      return setErrorMsg("Name and Email are required.");
+    };
 
     try {
-      
       const form = new FormData();
       form.append("name", name);
       form.append("email", email);
@@ -32,11 +38,17 @@ export default function EditUser({ user, onsuccess, onCancel }) {
       if (!editResp.ok)
         throw new Error(editData?.message || JSON.stringify(editData));
 
-      onsuccess();
+      setIsSuccess(true);
+      setLoading(false);
+
+      setTimeout(() => {
+        onsuccess();
+      }, 1000);
+
     } catch (err) {
       console.error(err);
-    }finally {
-      setLoading(false)
+      setErrorMsg("Update failed: " + (err.message || err));
+      setLoading(false);
     }
   };
 
@@ -55,6 +67,9 @@ export default function EditUser({ user, onsuccess, onCancel }) {
         </button>
 
         <h2 className="text-2xl font-bold mb-4 text-center">Edit User</h2>
+        {errorMsg && (
+          <p className="text-red-500 text-center mb-2">{errorMsg}</p>
+        )}
 
         {/* Name Input */}
         <div className="form-control w-full max-w-xs mb-3 flex items-start flex-col">
@@ -100,10 +115,10 @@ export default function EditUser({ user, onsuccess, onCancel }) {
         <div className="card-actions justify-center">
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || isSuccess}
             className="btn btn-primary w-full text-gray-300"
           >
-            {loading ? "Updating..." : "Update"}
+            {loading ? "Updating..." : isSuccess ? "Updated!" : "Update"}
           </button>
         </div>
       </form>

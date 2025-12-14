@@ -1,6 +1,6 @@
 // EncodeFace.jsx (replace file)
 import { useState } from "react";
-import { API_BASE } from "../api";
+import { API_BASE } from "../../api";
 
 export default function EncodeFace() {
   const [name, setName] = useState("");

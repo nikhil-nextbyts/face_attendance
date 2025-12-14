@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { API_BASE } from "../api";
-import EditUser from "./EditUser";
+import EditUser from "../components/base/EditUser";
 
 export default function UsersAll() {
   const [users, setUsers] = useState([]);
@@ -12,7 +12,7 @@ export default function UsersAll() {
 
   useEffect(() => {
     fetchUsers();
-  }, [setSelectedUser]);
+  }, []);
 
   async function fetchUsers() {
     setLoading(true);
@@ -32,6 +32,7 @@ export default function UsersAll() {
 
   const editUser = (u) => {
     setSelectedUser(u);
+    setStatusMsg("");
   }
 
   return (
@@ -66,7 +67,10 @@ export default function UsersAll() {
                   <td className="">{u.email}</td>
                   <td className="">{u.face_id}</td>
                   <td>
-                    <button onClick={() => editUser(u)}>edit</button>
+                    <button onClick={() => editUser(u)
+                    }>
+                      edit
+                    </button>
                   </td>
                 </tr>
               ))}

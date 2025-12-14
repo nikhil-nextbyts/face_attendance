@@ -29,8 +29,10 @@ export const markAttendance = (req, res) => {
 
 export const updateUser = (req, res) => {
   const { face_id } = req.params;
-  const { name, email, image_path } = req.body;
+  const { name, email } = req.body;
 
+  const image_path = req.file ? req.file.path : req.body.image_path;
+  
   if (!name || !email) {
     return res.status(400).json({ error: "Name and Email are required" });
   }
