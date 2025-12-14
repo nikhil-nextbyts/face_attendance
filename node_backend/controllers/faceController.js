@@ -5,7 +5,6 @@ import FormData from "form-data";
 import db from "../config/db.js";
 
 export const encodeFace = async (req, res) => {
-
   const imagePath = req.file && req.file.path;
   const name = req.body?.name?.trim()  || "maina" ;
   const email = req.body?.email?.trim() || "maina@yahoo.com";

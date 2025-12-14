@@ -26,3 +26,42 @@ export const markAttendance = (req, res) => {
     res.json({ message: "✅ Attendance marked successfully!" });
   });
 };
+
+export const updateUser = (req, res) => {
+  const { face_id } = req.params;
+  const { name, email, image_path } = req.body;
+
+  if (!name || !email) {
+    return res.status(400).json({ error: "Name and Email are required" });
+  }
+
+  if (!face_id) {
+    return res.status(400).json({ error: "User Face ID is required" });
+  }
+
+  let sql = `
+    UPDATE users 
+    SET name = ?, email = ?
+  `;
+  const values = [name, email];
+
+  if (image_path) {
+    sql += `, image_path = ?`;
+    values.push(image_path);
+  }
+
+  sql += ` WHERE face_id = ?`;
+  values.push(face_id);
+
+  db.query(sql, values, (err, result) => {
+    if (err) return res.status(500).json({ error: err.message });
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({ message: "✅ User updated successfully!" });
+  });
+};
+
+

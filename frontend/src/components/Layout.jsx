@@ -1,13 +1,14 @@
-import Navbar from "./Navbar"
-import EncodeFace from "./EncodeFace"
+import Navbar from "./Navbar";
+import EncodeFace from "./EncodeFace";
+import UsersAll from "./UsersAll";
 
 function Layout() {
   return (
     <div>
-      < Navbar />
-      <EncodeFace />
+      <Navbar />
+      < UsersAll />
     </div>
-  )
+  );
 }
 
-export default Layout
+export default Layout;

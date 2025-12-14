@@ -30,7 +30,6 @@ export default function EncodeFace() {
         throw new Error(encodeData?.message || JSON.stringify(encodeData));
 
       // Backend should return user registration info (or face_id)
-      console.log("encodeData", encodeData);
       setMsg("User encoded and registered ✅");
     } catch (err) {
       console.error(err);
@@ -39,34 +38,82 @@ export default function EncodeFace() {
   };
 
   return (
-    <div className="container flex flex-col items-center mt-32 mx-auto">
-      <h2 className="text-3xl text-blue-600 mb-6">Register / Encode Face</h2>
-      <form
-        onSubmit={handleSubmit}
-        className="bg-blue-500 min-w-48 mx-auto h-vh-48 flex flex-col p-4 rounded-lg"
-      >
-        <input
-          className="bg-gray-600 m-2"
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <input
-          className="bg-gray-600 m-2"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          className="bg-gray-600 m-2"
-          type="file"
-          accept="image/*"
-          onChange={(e) => setFile(e.target.files[0])}
-        />
-        <button type="submit">Upload & Register</button>
-      </form>
-      <p>{msg}</p>
-    </div>
+    <>
+      <div className="flex items-center justify-center w-full p-4 ">
+        <div className="bg-white p-8 rounded-lg shadow-lg w-96">
+          <h2 className="text-2xl font-bold mb-6 text-gray-800">
+            Register / Encode Face
+          </h2>
+          <form onSubmit={handleSubmit}>
+            <div className="mb-4 flex flex-col items-start">
+              <label
+                htmlFor="name"
+                className="block text-gray-700 text-sm font-semibold mb-2"
+              >
+                Name
+              </label>
+              <input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                type="text"
+                id="name"
+                name="name"
+                placeholder="Full Name"
+                required
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div className="mb-4 flex flex-col items-start">
+              <label
+                htmlFor="email"
+                className="block text-gray-700 text-sm font-semibold mb-2"
+              >
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div className="mb-4 flex flex-col items-start">
+              <label
+                htmlFor="image"
+                className="block text-gray-700 text-sm font-semibold mb-2"
+              >
+                Profile Image
+              </label>
+              <div className="mt-2 flex justify-cente border-2 border-gray-400 border-dashed p-5 rounded-lg ">
+                <input
+                  className="w-full text-gray-700 p-1 "
+                  type="file"
+                  name="image"
+                  accept="image/*"
+                  required
+                  id="image"
+                  onChange={(e) => setFile(e.target.files[0])}
+                />
+              </div>
+              <div className="mt-4 w-full">
+                <button
+                  type="submit"
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full text-center"
+                >
+                  Upload & Register
+                </button>
+              </div>
+            </div>
+          </form>
+          <p>{msg}</p>
+        </div>
+      </div>
+
+    </>
   );
 }
 
