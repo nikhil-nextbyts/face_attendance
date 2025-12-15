@@ -1,8 +1,16 @@
 import { Users, UserCheck, UserX} from "lucide-react";
+import { useState, useEffect } from "react";
 import StatCard from "../components/Card";
 import AttendanceChart from '../components/Chart';
+import { fetchUserCount, fetchAttendanceStats } from "../api";
+
 
 function Dashboard() {
+  const [User, setUser] = useState(null);
+  const [present, setPresent] = useState(null);
+  const [absent, setAbsent] = useState(null);
+  const [error, setError] = useState("");
+
   /** @type {{ day: string, value: number }[]} */
   const chartData = [
     { day: "Mon", value: 92 },
@@ -14,12 +22,28 @@ function Dashboard() {
     { day: "Sun", value: 0 },
   ];
 
+  useEffect(() => {
+    fetchUserCount()
+      .then(setUser)
+      .catch((err) => setError(err.message));
+
+    fetchAttendanceStats()
+      .then((data) => {
+        setPresent(Array(data.present).fill(0));
+        setAbsent(Array(data.absent).fill(0));
+      })
+      .catch((err) => setError(err.message));
+  }, []);
+
+
   return (
     <>
       {/* Header Section */}
       <div className="mb-8">
-        <h2 className="text-2xl font-bold text-gray-900">Dashboard Overview</h2>
-        <p className="text-text-secondary mt-1">
+        <h2 className="text-2xl font-bold text-blue-800">
+          Dashboard Overview
+        </h2>
+        <p className="text-text-secondary text-gray-500 mt-1">
           Welcome back, Administrator. Here's what's happening today.
         </p>
       </div>
@@ -29,19 +53,19 @@ function Dashboard() {
         {/* Example Card 1 */}
         <StatCard
           title="Total Users"
-          value={120}
+          value={error ? error : User !== null ? User : "Loading..."}
           icon={Users}
           color="blue"
         />
         <StatCard
           title="Present Today"
-          value="94.2%"
+          value={present ? present.length : "Loading..."}
           icon={UserCheck}
           color="green"
         />
         <StatCard
           title="On Leave"
-          value="18"
+          value={absent ? absent.length : "Loading..."}
           icon={UserX}
           color="orange"
         />

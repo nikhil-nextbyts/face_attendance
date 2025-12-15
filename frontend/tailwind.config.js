@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        /* same as before */
+        "dark-gray-35": "#353535",
       },
       fontFamily: { display: ["Spline Sans", "sans-serif"] },
     },

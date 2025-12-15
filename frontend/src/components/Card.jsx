@@ -1,3 +1,5 @@
+import '../index.css';
+
 const colorMap = {
   blue: "bg-blue-50 text-blue-600",
   green: "bg-green-50 text-green-600",

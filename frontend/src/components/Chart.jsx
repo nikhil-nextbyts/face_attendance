@@ -1,4 +1,3 @@
-import React from "react";
 import {
   BarChart,
   Bar,
@@ -59,7 +58,7 @@ const AttendanceChart = ({ data }) => {
               axisLine={false}
               tickLine={false}
               tick={{ fill: "#6B7280", fontSize: 12 }}
-              dy={10}
+              dy={7}
             />
             <YAxis
               axisLine={false}

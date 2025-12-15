@@ -66,4 +66,63 @@ export const updateUser = (req, res) => {
   });
 };
 
+export const getUserCount = async (req, res) => {
+  try {
+    const [rows] = await db.query(
+      "SELECT COUNT(*) AS total FROM users"
+    );
 
+    res.status(200).json({
+      success: true,
+      data: {
+        totalUsers: rows[0].total,
+      },
+    });
+  } catch (error) {
+    console.error("User count error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Unable to fetch user count",
+    });
+  }
+};
+
+
+export const getTodayAttendanceStats = async (req, res) => {
+  try {
+    // Present count
+    const [presentRows] = await db.query(`
+      SELECT COUNT(DISTINCT user_id) AS present
+      FROM attendance
+      WHERE date = CURDATE()
+        AND status = 'Present'
+    `);
+
+    // Absent count
+    const [absentRows] = await db.query(`
+      SELECT COUNT(*) AS absent
+      FROM users u
+      WHERE NOT EXISTS (
+        SELECT 1
+        FROM attendance a
+        WHERE a.user_id = u.id
+          AND a.date = CURDATE()
+          AND a.status = 'Present'
+      )
+    `);
+
+    res.status(200).json({
+      success: true,
+      data: {
+        present: presentRows[0].present,
+        absent: absentRows[0].absent,
+      },
+    });
+  } catch (error) {
+    console.error("Attendance stats error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch attendance stats",
+    });
+  }
+};
