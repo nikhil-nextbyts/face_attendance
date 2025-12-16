@@ -1,78 +1,75 @@
-import { Users, UserCheck, UserX} from "lucide-react";
-import { useState, useEffect } from "react";
+import { Users, UserCheck, UserX } from "lucide-react";
+import { useEffect, useState } from "react";
 import StatCard from "../components/Card";
-import AttendanceChart from '../components/Chart';
-import { fetchUserCount, fetchAttendanceStats } from "../api";
-
+import AttendanceChart from "../components/Chart";
+import {
+  fetchUserCount,
+  fetchAttendanceStats,
+  fetchWeeklyAttendance,
+} from "../api";
 
 function Dashboard() {
-  const [User, setUser] = useState(null);
-  const [present, setPresent] = useState(null);
-  const [absent, setAbsent] = useState(null);
+  const [userCount, setUserCount] = useState(null);
+  const [presentCount, setPresentCount] = useState(null);
+  const [absentCount, setAbsentCount] = useState(null);
+  const [chartData, setChartData] = useState([]);
   const [error, setError] = useState("");
-
-  /** @type {{ day: string, value: number }[]} */
-  const chartData = [
-    { day: "Mon", value: 92 },
-    { day: "Tue", value: 88 },
-    { day: "Wed", value: 95 },
-    { day: "Thu", value: 85 },
-    { day: "Fri", value: 91 },
-    { day: "Sat", value: 60 },
-    { day: "Sun", value: 0 },
-  ];
 
   useEffect(() => {
     fetchUserCount()
-      .then(setUser)
-      .catch((err) => setError(err.message));
+      .then(setUserCount)
+      .catch(() => setError("Failed to load user count"));
 
     fetchAttendanceStats()
       .then((data) => {
-        setPresent(Array(data.present).fill(0));
-        setAbsent(Array(data.absent).fill(0));
+        setPresentCount(data.present);
+        setAbsentCount(data.absent);
       })
-      .catch((err) => setError(err.message));
-  }, []);
+      .catch(() => setError("Failed to load attendance stats"));
 
+    fetchWeeklyAttendance()
+      .then(setChartData)
+      .catch(() => setError("Failed to load chart data"));
+  }, []);
 
   return (
     <>
-      {/* Header Section */}
-      <div className="mb-8">
-        <h2 className="text-2xl font-bold text-blue-800">
+      {/* Header */}
+      <div className="mb-8 text-center">
+        <h2 className="text-2xl font-bold text-zinc-800 ">
           Dashboard Overview
         </h2>
-        <p className="text-text-secondary text-gray-500 mt-1">
-          Welcome back, Administrator. Here's what's happening today.
+        <p className="text-sm text-zinc-500 mt-1">
+          Welcome back. Here’s what’s happening today.
         </p>
+        {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
       </div>
 
-      {/* Card Content Area */}
+      {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        {/* Example Card 1 */}
         <StatCard
           title="Total Users"
-          value={error ? error : User !== null ? User : "Loading..."}
+          value={userCount ?? "—"}
           icon={Users}
           color="blue"
         />
         <StatCard
           title="Present Today"
-          value={present ? present.length : "Loading..."}
+          value={presentCount ?? "—"}
           icon={UserCheck}
           color="green"
         />
         <StatCard
-          title="On Leave"
-          value={absent ? absent.length : "Loading..."}
+          title="Absent Today"
+          value={absentCount ?? "—"}
           icon={UserX}
           color="orange"
         />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 mb-8">
-        <div className="lg:col-span-4 h-[400px]">
+      {/* Chart */}
+      <div className="flex justify-center mb-8">
+        <div className="h-[400px]">
           <AttendanceChart data={chartData} />
         </div>
       </div>
@@ -80,4 +77,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard
+export default Dashboard;

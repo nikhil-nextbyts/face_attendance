@@ -106,7 +106,7 @@ export default function EditUser({ user, onsuccess, onCancel }) {
           </label>
           <input
             type="file"
-            className="file-input file-input-bordered w-full max-w-xs"
+            className=" "
             onChange={(e) => setFile(e.target.files[0])}
           />
         </div>

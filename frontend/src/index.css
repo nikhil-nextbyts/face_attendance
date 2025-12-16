@@ -17,7 +17,9 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #d9d9d9;
+  background-color: #f3f4f6
+
+;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -45,7 +47,7 @@ button {
   transition: border-color 0.25s;
 }
 button:hover {
-  color: black;
+
   border-color: #646cff;
 }
 

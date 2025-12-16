@@ -117,13 +117,36 @@ export const recognizeFace = async (req, res) => {
 
     const { match, distance } = fastapiRes.data || {};
 
-    if (!match) {
-      return res.json({ message: "No match found", distance: distance ?? null });
+    if (typeof match !== "string" || match.trim() === "") {
+      return res.json({
+        message: "No match found",
+        distance: distance ?? null,
+      });
     }
+
+    const normalizedFaceId = match.trim();
+   
+    //check attendence is already mared
+    try {
+      const [userRows] = await db.query("SELECT id FROM users WHERE face_id = ?", [normalizedFaceId]);
+      if (userRows.length === 0) {
+        return res.status(404).json({ message: "Face recognized but user not registered", face_id: match, distance });
+      }
+      const userId = userRows[0];
+      const [attRows] = await db.query("SELECT * FROM attendance WHERE user_id = ? AND date = CURDATE()", [userId.id]);
+      if (attRows.length > 0) {
+        return res.json({ message: "Attendance already marked for today", user: { id: userId.id }, face_id: match, distance });
+      }
+    } catch (attErr) {
+      console.error("Attendance check error:", attErr);
+      return res.status(500).json({ message: "Failed to check attendance", error: attErr.message });
+    }
+
 
     // find user by face_id
     try {
-      const [rows] = await db.query("SELECT id, name, email FROM users WHERE face_id = ?", [match]);
+      const [rows] = await db.query("SELECT id, name, email FROM users WHERE face_id = ?", [normalizedFaceId]);
+      
       if (rows.length === 0) {
         return res.status(404).json({ message: "Face recognized but user not registered", face_id: match, distance });
       }
@@ -136,7 +159,7 @@ export const recognizeFace = async (req, res) => {
         await db.query(insertSql, [user.id, "Present"]);
 
         return res.json({
-          message: "Attendance marked",
+          message: "Attendance marked Successfully",
           user: { id: user.id, name: user.name, email: user.email },
           face_id: match,
           distance, 

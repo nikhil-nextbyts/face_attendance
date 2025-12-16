@@ -60,7 +60,7 @@ export default function EncodeFace() {
                 name="name"
                 placeholder="Full Name"
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border  text-gray-800 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
             <div className="mb-4 flex flex-col items-start">
@@ -78,7 +78,7 @@ export default function EncodeFace() {
                 placeholder="you@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border text-gray-800 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
             <div className="mb-4 flex flex-col items-start">
@@ -109,10 +109,9 @@ export default function EncodeFace() {
               </div>
             </div>
           </form>
-          <p>{msg}</p>
+          <p className="text-black text-center" >{msg}</p>
         </div>
       </div>
-
     </>
   );
 }

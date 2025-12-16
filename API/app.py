@@ -77,30 +77,36 @@ async def recognize_face(image: UploadFile = File(...)):
         load_known_faces()
 
     img_path = os.path.join(TMP_DIR, f"{datetime.utcnow().timestamp()}.jpg")
-    with open(img_path, "wb") as f:
-        f.write(await image.read())
+    try:
+        with open(img_path, "wb") as f:
+            f.write(await image.read())
 
-    unknown_img = face_recognition.load_image_file(img_path)
-    unknown_encs = face_recognition.face_encodings(unknown_img)
+        unknown_img = face_recognition.load_image_file(img_path)
+        unknown_encs = face_recognition.face_encodings(unknown_img)
 
-    if len(unknown_encs) == 0:
-        return JSONResponse({"error": "No face found"}, status_code=400)
+        if len(unknown_encs) == 0:
+            return JSONResponse({"error": "No face found"}, status_code=400)
 
-    face_enc = unknown_encs[0]
-    distances = face_recognition.face_distance(known_encodings, face_enc)
+        face_enc = unknown_encs[0]
+        distances = face_recognition.face_distance(known_encodings, face_enc)
 
-    if len(distances) == 0:
-        return {"match": None}
+        if len(distances) == 0:
+            return {"match": None}
 
-    best_index = np.argmin(distances)
-    best_distance = float(distances[best_index])
+        best_index = np.argmin(distances)
+        best_distance = float(distances[best_index])
+    
 
-    # Adjust threshold based on accuracy requirement
-    if best_distance < 0.5:
-        name = known_names[best_index]
-        return {"match": name, "distance": best_distance}
-    else:
-        return {"match": None, "distance": best_distance}
+        # Adjust threshold based on accuracy requirement
+        if best_distance < 0.5:
+            name = known_names[best_index]
+            # print(f"Recognized: {name} with distance {best_distance}")
+            return {"match": name, "distance": best_distance}
+        else:
+            return {"match": None, "distance": best_distance}
+    finally:
+        if os.path.exists(img_path):
+            os.remove(img_path)
 
 # for start the app :- [uvicorn app:app --reload]
 #for got to pre-build ui :- write /docs in browser

@@ -126,3 +126,68 @@ export const getTodayAttendanceStats = async (req, res) => {
     });
   }
 };
+
+
+export const getWeeklyAttendance = async (req, res) => {
+  try {
+    const [rows] = await db.query(`
+      SELECT 
+        DATE(date) as day,
+        ROUND((SUM(status = 'Present') / COUNT(*)) * 100) as value
+      FROM attendance
+      WHERE date >= CURDATE() - INTERVAL 6 DAY
+      GROUP BY DATE(date)
+      ORDER BY DATE(date)
+    `);
+
+    const formatted = rows.map((r) => ({
+      day: new Date(r.day).toLocaleDateString("en-US", { weekday: "short" }),
+      value: r.value ?? 0,
+    }));
+
+    res.json(formatted);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const deleteUser = async (req, res) => {
+  const { id } = req.params;
+
+  if (!id) {
+    return res.status(400).json({ message: "User ID required" });
+  }
+
+  try {
+    // 1️⃣ Check if user exists
+    const [users] = await db.query(
+      "SELECT id, face_id FROM users WHERE id = ?",
+      [id]
+    );
+
+    if (users.length === 0) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const user = users[0];
+
+    // 2️⃣ Delete attendance first (FK safety)
+    await db.query("DELETE FROM attendance WHERE user_id = ?", [id]);
+
+    // 3️⃣ Delete user
+    await db.query("DELETE FROM users WHERE id = ?", [id]);
+
+    return res.json({
+      message: "User deleted successfully",
+      user_id: id,
+      face_id: user.face_id,
+    });
+  } catch (err) {
+    console.error("Delete user error:", err);
+    return res.status(500).json({
+      message: "Failed to delete user",
+      error: err.message,
+    });
+  }
+};
+

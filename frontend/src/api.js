@@ -37,3 +37,10 @@ export async function fetchAttendanceStats() {
 
   return json.data;
 }
+
+export const fetchWeeklyAttendance = async () => {
+  const res = await fetch(`${API_BASE}/api/user/attendance/weekly`);
+  if (!res.ok) throw new Error("Failed to fetch attendance");
+  return res.json();
+};
+
