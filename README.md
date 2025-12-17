@@ -82,6 +82,7 @@ The system follows a modular architecture consisting of four main components:
 ---
 
 ## 7. Project Structure
+```bash
 face_attendance/
 │
 ├── README.md
@@ -104,7 +105,7 @@ face_attendance/
 ├── app.py
 ├── encodings/
 └── tmp/
-
+```
 
 ---
 
