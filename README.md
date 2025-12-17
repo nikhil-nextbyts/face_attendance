@@ -1,195 +1,222 @@
-📌 Face Recognition Based Attendance Management System
+# Face Recognition Based Attendance Management System
 
-An AI-powered attendance management system that uses face recognition to automatically identify users and mark attendance.
-The system integrates FastAPI (Python) for face recognition, Node.js + Express for backend APIs, MySQL for data storage, and a React frontend for user interaction.
+## 1. Introduction
+The Face Recognition Based Attendance Management System is an AI-enabled web application designed to automate the process of attendance marking using facial recognition technology. Traditional attendance systems are time-consuming, error-prone, and vulnerable to proxy attendance. This project addresses these issues by providing a secure, accurate, and automated solution suitable for educational institutions.
 
-🚀 Project Overview
+The system integrates modern web technologies with artificial intelligence to identify registered users through facial features and mark attendance automatically in a centralized database.
 
-Traditional attendance systems are time-consuming, error-prone, and vulnerable to proxy attendance.
-This project solves these problems by using facial recognition technology to automatically mark attendance when a registered face is recognized.
+---
 
-Key Highlights
+## 2. Objective of the Project
+The main objectives of this project are:
+- To automate the attendance marking process using face recognition
+- To eliminate proxy attendance
+- To reduce manual effort and human errors
+- To maintain accurate attendance records with date and time
+- To provide a scalable and reliable attendance management solution
 
-➤ Automated attendance using face recognition
-➤ Eliminates proxy attendance
-➤Real-time attendance recording
-➤Scalable and modular architecture
-➤Suitable for educational institutions
+---
 
-🏗️ System Architecture
+## 3. Scope of the Project
+This project is intended for use in:
+- Colleges and universities
+- Schools and training institutes
+- Classrooms and laboratories
 
-Frontend (React)
-       |
-       v
-Backend API (Node.js + Express)
-       |
-       v
-Database (MySQL)
-       |
-       v
-ML Service (FastAPI + face_recognition)
+The system supports user registration, face encoding, face recognition, and automatic attendance marking. It can be extended in the future with analytics, cloud deployment, and mobile applications.
 
-🛠️ Technologies Used
+---
 
-Frontend
+## 4. System Architecture
+The system follows a modular architecture consisting of four main components:
 
-• React.js
-• HTML, CSS, JavaScript
-• Fetch API
+- **Frontend (React.js)**  
+  Provides user interface for face registration and recognition.
 
-Backend
+- **Backend (Node.js + Express)**  
+  Handles API requests, database operations, and communication with the ML service.
 
-• Node.js
-• Express.js
-• Multer (file uploads)
-• Axios
+- **Machine Learning Service (FastAPI + Python)**  
+  Performs face encoding and recognition using the `face_recognition` library.
 
-Machine Learning / AI
+- **Database (MySQL)**  
+  Stores user information and attendance records.
 
-• Python
-• FastAPI
+---
 
-face_recognition
+## 5. Technologies Used
 
-• NumPy
-• Database
-• MySQL
-• mysql2
+### Frontend
+- React.js
+- HTML
+- CSS
+- JavaScript
 
-✨ Features
+### Backend
+- Node.js
+- Express.js
+- Multer
+- Axios
 
-• 👤 User registration with face encoding
-• 📸 Face recognition using camera or uploaded image
-• 🕒 Automatic attendance marking with date & time
-• 🗄️ Secure database storage
-• ❌ Duplicate user prevention
-• 🧹 Temporary image cleanup after processing
+### Artificial Intelligence / Machine Learning
+- Python
+- FastAPI
+- face_recognition
+- NumPy
 
-📂 Project Structure
+### Database
+- MySQL
+- mysql2
 
+---
+
+## 6. Features of the System
+- User registration with face encoding
+- Face recognition using camera or image upload
+- Automatic attendance marking
+- Date and time based attendance records
+- Duplicate user prevention
+- Secure handling of facial data
+- Temporary image cleanup after processing
+
+---
+
+## 7. Project Structure
 face_attendance/
 │
-├── node_backend/
-│   ├── controllers/
-│   ├── routes/
-│   ├── config/
-│   ├── uploads/
-│   └── server.js
-│
-├── fastapi_backend/
-│   ├── app.py
-│   ├── encodings/
-│   └── tmp/
+├── README.md
+├── .gitignore
+├── scriptDB.sql
 │
 ├── frontend/
-│   ├── components/
-│   ├── pages/
-│   └── App.jsx
+│ ├── components/
+│ ├── pages/
+│ └── App.jsx
 │
-├── scriptDB.sql
-└── README.md
+├── node_backend/
+│ ├── controllers/
+│ ├── routes/
+│ ├── config/
+│ ├── uploads/
+│ └── server.js
+│
+└── fastapi_backend/
+├── app.py
+├── encodings/
+└── tmp/
 
 
-⚙️ Installation & Setup
+---
 
-1️⃣ Clone the Repository
-    git clone https://github.com/nikhil-nextbyts/face_attendance.git
-    cd face_attendance
+## 8. Database Design
 
-2️⃣ Setup MySQL Database
+### Users Table
+- id
+- name
+- email
+- face_id
+- image_path
 
-• Create database:
-    CREATE DATABASE face_attendance;
+### Attendance Table
+- id
+- user_id
+- date
+- time
+- status
 
-• Import schema from:
-    scriptDB.sql
+---
 
-3️⃣ Setup FastAPI (Face Recognition Service)
-    cd fastapi_backend
-    conda activate face   # or your virtual environment
-    pip install -r requirements.txt
-    uvicorn app:app --reload
+## 9. Installation and Setup
 
-    Runs on:
-        http://127.0.0.1:8000
-    
-4️⃣ Setup Node.js Backend
-    cd node_backend 
-    npm install
-    npm start
+### Step 1: Clone the Repository
+```bash
+git clone https://github.com/nikhil-nextbyts/face_attendance.git
+cd face_attendance
+```
 
-    Runs on:
-        http://localhost:5000
-        
-5️⃣ Setup Frontend
-    cd frontend
-    npm install
-    npm run dev
+### Step 2: Database Setup
 
-🔁 API Endpoints
+- Create a MySQL database named ```face_attendance```
+- Import the schema from ```scriptDB.sql```
 
-• Face Routes
-| Method | Endpoint              | Description                      |
-| ------ | --------------------- | -------------------------------- |
-| POST   | `/api/face/encode`    | Encode & register a face         |
-| POST   | `/api/face/recognize` | Recognize face & mark attendance |
+### Step 3: Start FastAPI Server
+```bash
+cd fastapi_backend
+pip install -r requirements.txt
+uvicorn app:app --reload
+```
 
-• User Routes
-| Method | Endpoint             | Description     |
-| ------ | -------------------- | --------------- |
-| POST   | `/api/user/register` | Register user   |
-| POST   | `/api/user/mark`     | Mark attendance |
+### Step 4: Start Node.js Backend
+```bash
+cd node_backend
+npm install
+npm start
+```
 
+### Step 5: Start Frontend
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
-🧪 Testing
+---
 
-• Manual testing using browser & Postman
-• Camera-based recognition testing
-• Image upload testing
-• Database verification via MySQL Workbench
+## 10. API Endpoints
+### Face APIs
 
-📊 Database Schema (Overview)
+- POST ```bash /api/face/encode``` – Encode and register a face
+- POST ```bash /api/face/recognize``` – Recognize face and mark attendance
 
-Users Table
-• id
-• name
-• email
-• face_id
-• image_path
+### User APIs
 
-Attendance Table
-• id
-• user_id
-• date
-• time
-• status
+- POST ```bash /api/user/register``` – Register a new user
+- POST ```bash /api/user/mark``` – Mark attendance manually (if required)
 
-🔒 Security Considerations
-• Email uniqueness enforced
-• Temporary images deleted after processing
-• Server-side validation
-• No face images stored permanently (only encodings)
+---
 
-🔮 Future Enhancements
-• Liveness detection
-• Cloud deployment
-• Mobile application
-• Role-based access (Admin / Faculty)
-• Attendance analytics dashboard
+## 11. Testing
 
-🎓 Academic Use
-• This project is developed as a Mini Project for MCA, demonstrating:
-• AI/ML integration in web applications
-• Full-stack development
-• Real-world problem solving
+#### The system was tested using:
+- Manual testing through browser
+- API testing using Postman
+- Camera-based face recognition tests
+- Database verification using MySQL Workbench
 
-📚 References
-• https://github.com/ageitgey/face_recognition
-• https://fastapi.tiangolo.com/
-• https://nodejs.org/
-• https://react.dev/
-• https://dev.mysql.com/
+---
 
+## 12. Security Considerations
+- Email uniqueness enforced
+- Facial images are not stored permanently
+- Face encodings stored securely
+- Temporary files deleted after processing
+- Environment variables used for sensitive data
 
-👤 Author       
-    NIKHIL SAINI
+---
+
+## 13. Future Enhancements
+- Liveness detection
+- Role-based access (Admin / Faculty)
+- Attendance analytics and reports
+- Cloud deployment
+- Mobile application support
+
+---
+
+## 14. Conclusion
+
+The Face Recognition Based Attendance Management System successfully demonstrates the integration of artificial intelligence with full-stack web development. It provides an efficient, secure, and automated solution for attendance management and serves as a practical implementation of AI in real-world applications.
+
+---
+
+## Author
+
+Nikhil Saini
+
+## 16. References
+
+- https://github.com/ageitgey/face_recognition
+- https://fastapi.tiangolo.com/
+- https://nodejs.org/
+- https://react.dev/
+- https://dev.mysql.com/
